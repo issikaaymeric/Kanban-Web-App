@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext } from '@hello-pangea/dnd';
 import styled, { createGlobalStyle } from 'styled-components';
 import Column from './Column.jsx';
 import TaskModal from './TaskModal.jsx';
