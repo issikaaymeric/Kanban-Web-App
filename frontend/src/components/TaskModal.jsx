@@ -5,95 +5,103 @@ const fadeIn = keyframes`from{opacity:0;transform:scale(0.97)}to{opacity:1;trans
 
 const Overlay = styled.div`
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.65);
+  background: rgba(15,23,42,0.45);
   display: flex; align-items: center; justify-content: center;
-  z-index: 1000; backdrop-filter: blur(4px);
+  z-index: 1000; backdrop-filter: blur(3px);
+  font-family: 'Plus Jakarta Sans', sans-serif;
 `;
 
 const Modal = styled.div`
-  background: #1a1a22;
-  border: 1px solid #2e2e3a;
-  border-radius: 20px;
-  padding: 36px 40px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 36px;
   width: 100%; max-width: 460px;
-  animation: ${fadeIn} 0.22s ease;
-  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+  animation: ${fadeIn} 0.2s ease;
 `;
 
 const Header = styled.div`
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 `;
 
-const Title = styled.h2`font-size: 18px; font-weight: 700; color: #f0f0f5; margin: 0;`;
+const Title = styled.h2`font-size: 17px; font-weight: 700; color: #1e293b; margin: 0;`;
 
 const Close = styled.button`
-  background: #2e2e3a; border: none; color: #888; border-radius: 8px;
-  width: 32px; height: 32px; cursor: pointer; font-size: 15px;
+  background: #f1f5f9; border: none; color: #64748b; border-radius: 8px;
+  width: 30px; height: 30px; cursor: pointer; font-size: 14px;
   display: flex; align-items: center; justify-content: center;
-  &:hover { background: #3a3a4a; color: #f0f0f5; }
+  &:hover { background: #e2e8f0; color: #1e293b; }
 `;
 
-const Field = styled.div`margin-bottom: 20px;`;
+const Field = styled.div`margin-bottom: 18px;`;
 
 const Label = styled.label`
-  display: block; font-size: 12px; font-weight: 600;
-  color: #8888a0; margin-bottom: 7px;
-  text-transform: uppercase; letter-spacing: 0.5px;
+  display: block; font-size: 11.5px; font-weight: 700;
+  color: #94a3b8; margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.6px;
 `;
 
 const Input = styled.input`
-  width: 100%; background: #0f0f13; border: 1px solid #2e2e3a;
-  border-radius: 10px; padding: 11px 14px; font-size: 15px;
-  color: #f0f0f5; font-family: inherit; outline: none; box-sizing: border-box;
-  transition: border-color 0.2s;
-  &:focus { border-color: #7c6af7; }
-  &::placeholder { color: #3a3a50; }
+  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+  &:focus { border-color: #6366f1; background: #fff; }
+  &::placeholder { color: #cbd5e1; }
 `;
 
 const Textarea = styled.textarea`
-  width: 100%; background: #0f0f13; border: 1px solid #2e2e3a;
-  border-radius: 10px; padding: 11px 14px; font-size: 15px;
-  color: #f0f0f5; font-family: inherit; outline: none; box-sizing: border-box;
-  resize: vertical; min-height: 90px; transition: border-color 0.2s;
-  &:focus { border-color: #7c6af7; }
-  &::placeholder { color: #3a3a50; }
+  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
+  resize: vertical; min-height: 80px; transition: border-color 0.15s, background 0.15s;
+  &:focus { border-color: #6366f1; background: #fff; }
+  &::placeholder { color: #cbd5e1; }
 `;
 
 const Select = styled.select`
-  width: 100%; background: #0f0f13; border: 1px solid #2e2e3a;
-  border-radius: 10px; padding: 11px 14px; font-size: 15px;
-  color: #f0f0f5; font-family: inherit; outline: none; box-sizing: border-box;
-  cursor: pointer; transition: border-color 0.2s;
-  &:focus { border-color: #7c6af7; }
+  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
+  cursor: pointer; transition: border-color 0.15s;
+  &:focus { border-color: #6366f1; }
 `;
 
-const Actions = styled.div`display: flex; gap: 10px; margin-top: 8px;`;
+const PriorityRow = styled.div`display: flex; gap: 8px;`;
+
+const PRIORITY_COLORS = { low: '#22c55e', medium: '#f59e0b', high: '#ef4444' };
+
+const PriorityBtn = styled.button`
+  flex: 1; padding: 9px 0; border-radius: 8px;
+  font-size: 12.5px; font-weight: 700; font-family: inherit; cursor: pointer;
+  transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.4px;
+  background: ${p => p.$active ? PRIORITY_COLORS[p.$level] + '18' : '#f8fafc'};
+  border: 1.5px solid ${p => p.$active ? PRIORITY_COLORS[p.$level] : '#e2e8f0'};
+  color: ${p => p.$active ? PRIORITY_COLORS[p.$level] : '#94a3b8'};
+  &:hover { border-color: ${p => PRIORITY_COLORS[p.$level]}; color: ${p => PRIORITY_COLORS[p.$level]}; }
+`;
+
+const Actions = styled.div`display: flex; gap: 8px; margin-top: 4px;`;
 
 const Btn = styled.button`
-  flex: 1; padding: 13px; border-radius: 10px;
-  font-size: 14px; font-weight: 600; font-family: inherit;
-  cursor: pointer; transition: all 0.2s;
-  background: ${p => p.$primary ? '#7c6af7' : 'transparent'};
-  color: ${p => p.$primary ? '#fff' : '#8888a0'};
-  border: 1px solid ${p => p.$primary ? '#7c6af7' : '#2e2e3a'};
-  &:hover {
-    background: ${p => p.$primary ? '#6a58e8' : '#2e2e3a'};
-    color: #f0f0f5;
-  }
+  flex: 1; padding: 11px; border-radius: 8px;
+  font-size: 13.5px; font-weight: 600; font-family: inherit; cursor: pointer;
+  transition: all 0.15s;
+  background: ${p => p.$primary ? '#6366f1' : '#f1f5f9'};
+  color: ${p => p.$primary ? '#fff' : '#64748b'};
+  border: none;
+  &:hover { background: ${p => p.$primary ? '#4f46e5' : '#e2e8f0'}; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `;
 
 const DeleteBtn = styled.button`
-  padding: 13px 18px; border-radius: 10px;
-  background: transparent; color: #f97066;
-  border: 1px solid #f97066; font-family: inherit;
-  font-size: 14px; font-weight: 600; cursor: pointer;
-  transition: all 0.2s;
-  &:hover { background: #f97066; color: #fff; }
+  padding: 11px 16px; border-radius: 8px;
+  background: #fff5f5; color: #ef4444;
+  border: 1.5px solid #fecaca; font-family: inherit;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  &:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 `;
-
-const PRIORITY_COLORS = { low: '#4ade80', medium: '#fbbf24', high: '#f97066' };
 
 export default function TaskModal({ task, columns, onSave, onDelete, onClose }) {
   const isEdit = !!task?.id;
@@ -112,7 +120,7 @@ export default function TaskModal({ task, columns, onSave, onDelete, onClose }) 
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Delete this task?')) return;
+    if (!window.confirm('Delete this card?')) return;
     await onDelete(task.id);
     onClose();
   };
@@ -121,7 +129,7 @@ export default function TaskModal({ task, columns, onSave, onDelete, onClose }) 
     <Overlay onClick={onClose}>
       <Modal onClick={e => e.stopPropagation()}>
         <Header>
-          <Title>{isEdit ? 'Edit task' : 'New task'}</Title>
+          <Title>{isEdit ? 'Edit card' : 'Add card'}</Title>
           <Close onClick={onClose}>✕</Close>
         </Header>
 
@@ -132,6 +140,7 @@ export default function TaskModal({ task, columns, onSave, onDelete, onClose }) 
             value={title}
             onChange={e => setTitle(e.target.value)}
             autoFocus
+            onKeyDown={e => e.key === 'Enter' && handleSave()}
           />
         </Field>
 
@@ -155,31 +164,20 @@ export default function TaskModal({ task, columns, onSave, onDelete, onClose }) 
 
         <Field>
           <Label>Priority</Label>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <PriorityRow>
             {['low', 'medium', 'high'].map(p => (
-              <button
-                key={p}
-                onClick={() => setPriority(p)}
-                style={{
-                  flex: 1, padding: '10px 0', borderRadius: 10, cursor: 'pointer',
-                  fontFamily: 'inherit', fontSize: 13, fontWeight: 600,
-                  background: priority === p ? PRIORITY_COLORS[p] + '22' : '#0f0f13',
-                  border: `1px solid ${priority === p ? PRIORITY_COLORS[p] : '#2e2e3a'}`,
-                  color: priority === p ? PRIORITY_COLORS[p] : '#5a5a70',
-                  transition: 'all 0.15s',
-                }}
-              >
-                {p.charAt(0).toUpperCase() + p.slice(1)}
-              </button>
+              <PriorityBtn key={p} $active={priority === p} $level={p} onClick={() => setPriority(p)}>
+                {p}
+              </PriorityBtn>
             ))}
-          </div>
+          </PriorityRow>
         </Field>
 
         <Actions>
           {isEdit && <DeleteBtn onClick={handleDelete}>Delete</DeleteBtn>}
           <Btn onClick={onClose}>Cancel</Btn>
           <Btn $primary onClick={handleSave} disabled={loading || !title.trim()}>
-            {loading ? 'Saving…' : isEdit ? 'Save changes' : 'Create task'}
+            {loading ? 'Saving…' : isEdit ? 'Save' : 'Add card'}
           </Btn>
         </Actions>
       </Modal>
