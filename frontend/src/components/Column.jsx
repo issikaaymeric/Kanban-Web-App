@@ -1,153 +1,19 @@
 import React, { useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import styled from 'styled-components';
 import Task from './Task.jsx';
 
-// Each column gets one of three Trello-inspired pastel backgrounds
-const COLUMN_BG = ['#fef9c3', '#dcfce7', '#ffffff'];  // yellow, green, white
+const COLUMN_COLORS = [
+  { bg: '#fef9c3', hover: '#fef08a', border: '#fde047' },   // yellow
+  { bg: '#dcfce7', hover: '#bbf7d0', border: '#86efac' },   // green
+  { bg: '#ffffff', hover: '#f8fafc', border: '#e2e8f0' },   // white
+];
 
-const Wrap = styled.div`
-  width: 272px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 140px);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px 8px;
-  background: ${p => p.$bg};
-  border-radius: 10px 10px 0 0;
-`;
-
-const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 0;
-`;
-
-const ColTitle = styled.h3`
-  font-size: 13px;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Count = styled.span`
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-  background: rgba(0,0,0,0.08);
-  border-radius: 12px;
-  padding: 1px 7px;
-  flex-shrink: 0;
-`;
-
-const MenuBtn = styled.button`
-  background: none;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  line-height: 1;
-  &:hover { background: rgba(0,0,0,0.08); color: #475569; }
-`;
-
-const Body = styled.div`
-  background: ${p => p.$bg};
-  padding: 4px 8px;
-  flex: 1;
-  overflow-y: auto;
-  &::-webkit-scrollbar { width: 4px; }
-  &::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
-`;
-
-const DropZone = styled.div`
-  min-height: 8px;
-  transition: background 0.2s;
-  background: ${p => p.$isDraggingOver ? 'rgba(99,102,241,0.06)' : 'transparent'};
-  border-radius: 6px;
-`;
-
-const AddCardBtn = styled.button`
-  width: 100%;
-  background: ${p => p.$bg};
-  border: none;
-  border-radius: 0 0 10px 10px;
-  padding: 8px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #64748b;
-  cursor: pointer;
-  text-align: left;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.15s, background 0.15s;
-  &:hover { color: #1e293b; background: ${p => p.$hoverBg}; }
-`;
-
-const QuickAddForm = styled.div`
-  padding: 4px 8px 8px;
-  background: ${p => p.$bg};
-`;
-
-const QuickInput = styled.textarea`
-  width: 100%;
-  background: #fff;
-  border: 2px solid #6366f1;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13.5px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: #1e293b;
-  outline: none;
-  resize: none;
-  min-height: 60px;
-  box-sizing: border-box;
-  box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
-`;
-
-const QuickActions = styled.div`
-  display: flex;
-  gap: 6px;
-  margin-top: 6px;
-`;
-
-const QBtn = styled.button`
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  cursor: pointer;
-  border: none;
-  background: ${p => p.$primary ? '#6366f1' : 'transparent'};
-  color: ${p => p.$primary ? '#fff' : '#64748b'};
-  &:hover { background: ${p => p.$primary ? '#4f46e5' : '#f1f5f9'}; }
-`;
-
-// Darken a pastel slightly for hover
-const HOVER_BG = ['#fef08a', '#bbf7d0', '#f1f5f9'];
-
-export default function Column({ column, tasks, colIndex, onAddTask, onEditTask, onQuickAdd, onDeleteColumn }) {
+export default function Column({ column, tasks, colIndex, onAddTask, onEditTask, onQuickAdd }) {
   const [quickAdd, setQuickAdd] = useState(false);
   const [quickTitle, setQuickTitle] = useState('');
+  const [isOver, setIsOver] = useState(false);
 
-  const bg = COLUMN_BG[colIndex % COLUMN_BG.length];
-  const hoverBg = HOVER_BG[colIndex % HOVER_BG.length];
+  const colors = COLUMN_COLORS[colIndex % COLUMN_COLORS.length];
 
   const submitQuick = () => {
     if (!quickTitle.trim()) return;
@@ -157,40 +23,93 @@ export default function Column({ column, tasks, colIndex, onAddTask, onEditTask,
   };
 
   return (
-    <Wrap>
-      <Header $bg={bg}>
-        <TitleRow>
-          <ColTitle>{column.title}</ColTitle>
-          <Count>{tasks.length}</Count>
-        </TitleRow>
-        <MenuBtn title="Column options" onClick={() => onAddTask(column.id)}>+</MenuBtn>
-      </Header>
+    <div style={{
+      width: 272,
+      flexShrink: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      maxHeight: 'calc(100vh - 100px)',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+    }}>
 
-      <Body $bg={bg}>
+      {/* Header */}
+      <div style={{
+        background: colors.bg,
+        borderRadius: '12px 12px 0 0',
+        padding: '10px 12px 8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottom: `2px solid ${colors.border}`,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{
+            fontSize: 13, fontWeight: 700, color: '#1e293b',
+          }}>
+            {column.title}
+          </span>
+          <span style={{
+            fontSize: 11, fontWeight: 600, color: '#64748b',
+            background: 'rgba(0,0,0,0.08)', borderRadius: 12,
+            padding: '1px 8px',
+          }}>
+            {tasks.length}
+          </span>
+        </div>
+        <button
+          onClick={() => setQuickAdd(true)}
+          title="Add card"
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontSize: 20, color: '#94a3b8', lineHeight: 1,
+            padding: '0 4px', borderRadius: 4,
+            fontWeight: 300,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#94a3b8'; e.currentTarget.style.background = 'none'; }}
+        >
+          +
+        </button>
+      </div>
+
+      {/* Task list */}
+      <div style={{
+        background: colors.bg,
+        padding: '8px 8px 0',
+        flex: 1,
+        overflowY: 'auto',
+        minHeight: 40,
+      }}>
         <Droppable droppableId={String(column.id)}>
           {(provided, snapshot) => (
-            <DropZone
+            <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              $isDraggingOver={snapshot.isDraggingOver}
+              style={{
+                minHeight: 8,
+                background: snapshot.isDraggingOver ? 'rgba(99,102,241,0.06)' : 'transparent',
+                borderRadius: 8,
+                transition: 'background 0.2s',
+                paddingBottom: 4,
+              }}
             >
               {tasks.map((task, index) => (
-                <Task
-                  key={task.id}
-                  task={task}
-                  index={index}
-                  onEdit={onEditTask}
-                />
+                <Task key={task.id} task={task} index={index} onEdit={onEditTask} />
               ))}
               {provided.placeholder}
-            </DropZone>
+            </div>
           )}
         </Droppable>
-      </Body>
+      </div>
 
+      {/* Quick add form or Add a card button */}
       {quickAdd ? (
-        <QuickAddForm $bg={bg}>
-          <QuickInput
+        <div style={{
+          background: colors.bg,
+          padding: '6px 8px 10px',
+          borderRadius: '0 0 12px 12px',
+        }}>
+          <textarea
             autoFocus
             placeholder="Enter a title for this card…"
             value={quickTitle}
@@ -199,17 +118,60 @@ export default function Column({ column, tasks, colIndex, onAddTask, onEditTask,
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitQuick(); }
               if (e.key === 'Escape') { setQuickAdd(false); setQuickTitle(''); }
             }}
+            style={{
+              width: '100%', background: '#fff',
+              border: '2px solid #6366f1', borderRadius: 8,
+              padding: '8px 10px', fontSize: 13.5,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              color: '#1e293b', outline: 'none', resize: 'none',
+              minHeight: 60, boxSizing: 'border-box',
+              boxShadow: '0 0 0 4px rgba(99,102,241,0.1)',
+            }}
           />
-          <QuickActions>
-            <QBtn $primary onClick={submitQuick}>Add card</QBtn>
-            <QBtn onClick={() => { setQuickAdd(false); setQuickTitle(''); }}>✕</QBtn>
-          </QuickActions>
-        </QuickAddForm>
+          <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+            <button
+              onClick={submitQuick}
+              style={{
+                padding: '7px 16px', borderRadius: 6, border: 'none',
+                background: '#6366f1', color: '#fff',
+                fontSize: 13, fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: 'pointer',
+              }}
+            >
+              Add card
+            </button>
+            <button
+              onClick={() => { setQuickAdd(false); setQuickTitle(''); }}
+              style={{
+                padding: '7px 12px', borderRadius: 6, border: 'none',
+                background: 'transparent', color: '#64748b',
+                fontSize: 13, fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: 'pointer',
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
       ) : (
-        <AddCardBtn $bg={bg} $hoverBg={hoverBg} onClick={() => setQuickAdd(true)}>
-          <span style={{ fontSize: 16, lineHeight: 1 }}>+</span> Add a card
-        </AddCardBtn>
+        <button
+          onClick={() => setQuickAdd(true)}
+          style={{
+            width: '100%', background: colors.bg,
+            border: 'none', borderRadius: '0 0 12px 12px',
+            padding: '8px 12px', fontSize: 13, fontWeight: 500,
+            color: '#64748b', cursor: 'pointer', textAlign: 'left',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            display: 'flex', alignItems: 'center', gap: 6,
+            borderTop: `1px solid ${colors.border}`,
+            transition: 'background 0.15s, color 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = colors.hover; e.currentTarget.style.color = '#1e293b'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = colors.bg; e.currentTarget.style.color = '#64748b'; }}
+        >
+          <span style={{ fontSize: 16 }}>+</span> Add a card
+        </button>
       )}
-    </Wrap>
+    </div>
   );
 }
