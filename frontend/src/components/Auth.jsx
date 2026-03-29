@@ -1,98 +1,14 @@
 import React, { useState } from 'react';
 import { supabase } from './supabaseClient';
-import styled, { keyframes } from 'styled-components';
-
-const fadeUp = keyframes`from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}`;
-
-const Page = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 50%, #dbeafe 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  padding: 20px;
-`;
-
-const Card = styled.div`
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.8);
-  border-radius: 20px;
-  padding: 44px 40px;
-  width: 100%; max-width: 400px;
-  box-shadow: 0 24px 48px rgba(99,102,241,0.12);
-  animation: ${fadeUp} 0.4s ease;
-`;
-
-const Logo = styled.div`
-  font-size: 22px; font-weight: 800; color: #6366f1;
-  letter-spacing: -0.5px; margin-bottom: 28px;
-  display: flex; align-items: center; gap: 6px;
-`;
-
-const Title = styled.h1`
-  font-size: 24px; font-weight: 800; color: #1e293b;
-  margin: 0 0 6px; letter-spacing: -0.3px;
-`;
-
-const Sub = styled.p`
-  font-size: 14px; color: #94a3b8; margin: 0 0 28px;
-`;
-
-const Field = styled.div`margin-bottom: 16px;`;
-
-const Label = styled.label`
-  display: block; font-size: 12px; font-weight: 700;
-  color: #64748b; margin-bottom: 6px;
-  text-transform: uppercase; letter-spacing: 0.5px;
-`;
-
-const Input = styled.input`
-  width: 100%; background: #f8fafc;
-  border: 1.5px solid ${p => p.$error ? '#ef4444' : '#e2e8f0'};
-  border-radius: 10px; padding: 12px 14px; font-size: 14px;
-  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
-  transition: border-color 0.15s, background 0.15s;
-  &:focus { border-color: #6366f1; background: #fff; }
-  &::placeholder { color: #cbd5e1; }
-`;
-
-const Btn = styled.button`
-  width: 100%; background: #6366f1; color: #fff;
-  border: none; border-radius: 10px; padding: 13px;
-  font-size: 14.5px; font-weight: 700; font-family: inherit;
-  cursor: pointer; margin-top: 6px;
-  transition: background 0.15s, transform 0.1s;
-  letter-spacing: -0.1px;
-  &:hover { background: #4f46e5; }
-  &:active { transform: scale(0.99); }
-  &:disabled { background: #c7d2fe; cursor: not-allowed; }
-`;
-
-const Toggle = styled.p`
-  text-align: center; font-size: 13.5px; color: #94a3b8;
-  margin-top: 20px;
-  span {
-    color: #6366f1; cursor: pointer; font-weight: 700;
-    &:hover { text-decoration: underline; }
-  }
-`;
-
-const Alert = styled.p`
-  border-radius: 8px; padding: 10px 14px;
-  font-size: 13px; margin-bottom: 16px;
-  background: ${p => p.$success ? '#f0fdf4' : '#fef2f2'};
-  border: 1px solid ${p => p.$success ? '#bbf7d0' : '#fecaca'};
-  color: ${p => p.$success ? '#16a34a' : '#ef4444'};
-`;
 
 export default function Auth() {
-  const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState('');
+  const [mode, setMode]         = useState('login');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [name, setName]         = useState('');
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+  const [success, setSuccess]   = useState('');
 
   const handle = async (e) => {
     e.preventDefault();
@@ -104,7 +20,7 @@ export default function Auth() {
       } else {
         const { error } = await supabase.auth.signUp({
           email, password,
-          options: { data: { full_name: name } }
+          options: { data: { full_name: name } },
         });
         if (error) throw error;
         setSuccess('Account created! Check your email to confirm.');
@@ -116,47 +32,120 @@ export default function Auth() {
     }
   };
 
-  const switchMode = () => {
-    setMode(m => m === 'login' ? 'signup' : 'login');
-    setError(''); setSuccess('');
+  const inputStyle = {
+    width: '100%', background: '#f8fafc',
+    border: '1.5px solid #e2e8f0', borderRadius: 10,
+    padding: '12px 14px', fontSize: 14, color: '#1e293b',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    outline: 'none', boxSizing: 'border-box',
+  };
+
+  const labelStyle = {
+    display: 'block', fontSize: 11, fontWeight: 700,
+    color: '#64748b', marginBottom: 6,
+    textTransform: 'uppercase', letterSpacing: '0.5px',
   };
 
   return (
-    <Page>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #fce7f3 0%, #ede9fe 50%, #dbeafe 100%)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      padding: 20,
+    }}>
       <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-      <Card>
-        <Logo>✦ Kanban</Logo>
-        <Title>{mode === 'login' ? 'Welcome back' : 'Get started'}</Title>
-        <Sub>{mode === 'login' ? 'Sign in to your board' : 'Create your free account'}</Sub>
 
-        {error && <Alert>{error}</Alert>}
-        {success && <Alert $success>{success}</Alert>}
+      <div style={{
+        background: 'rgba(255,255,255,0.92)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.8)',
+        borderRadius: 20,
+        padding: '44px 40px',
+        width: '100%', maxWidth: 400,
+        boxShadow: '0 24px 48px rgba(99,102,241,0.12)',
+      }}>
+        {/* Logo */}
+        <div style={{ fontSize: 22, fontWeight: 800, color: '#6366f1', marginBottom: 28, letterSpacing: -0.5 }}>
+          ✦ Kanban
+        </div>
+
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#1e293b', margin: '0 0 6px', letterSpacing: -0.3 }}>
+          {mode === 'login' ? 'Welcome back' : 'Get started'}
+        </h1>
+        <p style={{ fontSize: 14, color: '#94a3b8', margin: '0 0 28px' }}>
+          {mode === 'login' ? 'Sign in to your board' : 'Create your free account'}
+        </p>
+
+        {/* Alerts */}
+        {error && (
+          <div style={{
+            background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444',
+            borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 16,
+          }}>{error}</div>
+        )}
+        {success && (
+          <div style={{
+            background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#16a34a',
+            borderRadius: 8, padding: '10px 14px', fontSize: 13, marginBottom: 16,
+          }}>{success}</div>
+        )}
 
         <form onSubmit={handle}>
           {mode === 'signup' && (
-            <Field>
-              <Label>Full name</Label>
-              <Input placeholder="Jane Doe" value={name} onChange={e => setName(e.target.value)} required />
-            </Field>
+            <div style={{ marginBottom: 16 }}>
+              <label style={labelStyle}>Full name</label>
+              <input style={inputStyle} placeholder="Jane Doe" value={name}
+                onChange={e => setName(e.target.value)} required
+                onFocus={e => e.target.style.borderColor = '#6366f1'}
+                onBlur={e => e.target.style.borderColor = '#e2e8f0'}
+              />
+            </div>
           )}
-          <Field>
-            <Label>Email</Label>
-            <Input type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
-          </Field>
-          <Field>
-            <Label>Password</Label>
-            <Input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
-          </Field>
-          <Btn type="submit" disabled={loading}>
+
+          <div style={{ marginBottom: 16 }}>
+            <label style={labelStyle}>Email</label>
+            <input style={inputStyle} type="email" placeholder="you@example.com" value={email}
+              onChange={e => setEmail(e.target.value)} required
+              onFocus={e => e.target.style.borderColor = '#6366f1'}
+              onBlur={e => e.target.style.borderColor = '#e2e8f0'}
+            />
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <label style={labelStyle}>Password</label>
+            <input style={inputStyle} type="password" placeholder="••••••••" value={password}
+              onChange={e => setPassword(e.target.value)} required
+              onFocus={e => e.target.style.borderColor = '#6366f1'}
+              onBlur={e => e.target.style.borderColor = '#e2e8f0'}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%', background: loading ? '#c7d2fe' : '#6366f1',
+              color: '#fff', border: 'none', borderRadius: 10,
+              padding: 13, fontSize: 14.5, fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: loading ? 'not-allowed' : 'pointer', letterSpacing: -0.1,
+            }}
+          >
             {loading ? 'Please wait…' : mode === 'login' ? 'Sign in →' : 'Create account →'}
-          </Btn>
+          </button>
         </form>
 
-        <Toggle>
+        <p style={{ textAlign: 'center', fontSize: 13.5, color: '#94a3b8', marginTop: 20 }}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <span onClick={switchMode}>{mode === 'login' ? 'Sign up' : 'Sign in'}</span>
-        </Toggle>
-      </Card>
-    </Page>
+          <span
+            onClick={() => { setMode(m => m === 'login' ? 'signup' : 'login'); setError(''); setSuccess(''); }}
+            style={{ color: '#6366f1', cursor: 'pointer', fontWeight: 700 }}
+          >
+            {mode === 'login' ? 'Sign up' : 'Sign in'}
+          </span>
+        </p>
+      </div>
+    </div>
   );
 }
