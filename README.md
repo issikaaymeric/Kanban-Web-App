@@ -224,5 +224,5 @@ For a single-board app, React `useState` in `KanbanBoard.jsx` is sufficient. Add
 
 **Issika Aymeric**
 Computer Science Student
-[LinkedIn]([https://www.linkedin.com/in/issika-aymeric-kouam%C3%A9-214866373/) · [GitHub](https://github.com/issikaaymeric) · [issikaaymeric.online](https://issikaaymeric.online)
+[LinkedIn]([https://www.linkedin.com/in/issika-aymeric-kouam%C3%A9-214866373/]) · [GitHub](https://github.com/issikaaymeric) · [issikaaymeric.online](https://issikaaymeric.online)
 
