@@ -1,115 +1,14 @@
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}`;
-
-const Overlay = styled.div`
-  position: fixed; inset: 0;
-  background: rgba(15,23,42,0.45);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000; backdrop-filter: blur(3px);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-`;
-
-const Modal = styled.div`
-  background: #fff;
-  border-radius: 16px;
-  padding: 32px 36px;
-  width: 100%; max-width: 460px;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.15);
-  animation: ${fadeIn} 0.2s ease;
-`;
-
-const Header = styled.div`
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px;
-`;
-
-const Title = styled.h2`font-size: 17px; font-weight: 700; color: #1e293b; margin: 0;`;
-
-const Close = styled.button`
-  background: #f1f5f9; border: none; color: #64748b; border-radius: 8px;
-  width: 30px; height: 30px; cursor: pointer; font-size: 14px;
-  display: flex; align-items: center; justify-content: center;
-  &:hover { background: #e2e8f0; color: #1e293b; }
-`;
-
-const Field = styled.div`margin-bottom: 18px;`;
-
-const Label = styled.label`
-  display: block; font-size: 11.5px; font-weight: 700;
-  color: #94a3b8; margin-bottom: 6px;
-  text-transform: uppercase; letter-spacing: 0.6px;
-`;
-
-const Input = styled.input`
-  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
-  border-radius: 8px; padding: 10px 12px; font-size: 14px;
-  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
-  transition: border-color 0.15s, background 0.15s;
-  &:focus { border-color: #6366f1; background: #fff; }
-  &::placeholder { color: #cbd5e1; }
-`;
-
-const Textarea = styled.textarea`
-  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
-  border-radius: 8px; padding: 10px 12px; font-size: 14px;
-  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
-  resize: vertical; min-height: 80px; transition: border-color 0.15s, background 0.15s;
-  &:focus { border-color: #6366f1; background: #fff; }
-  &::placeholder { color: #cbd5e1; }
-`;
-
-const Select = styled.select`
-  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
-  border-radius: 8px; padding: 10px 12px; font-size: 14px;
-  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
-  cursor: pointer; transition: border-color 0.15s;
-  &:focus { border-color: #6366f1; }
-`;
-
-const PriorityRow = styled.div`display: flex; gap: 8px;`;
 
 const PRIORITY_COLORS = { low: '#22c55e', medium: '#f59e0b', high: '#ef4444' };
 
-const PriorityBtn = styled.button`
-  flex: 1; padding: 9px 0; border-radius: 8px;
-  font-size: 12.5px; font-weight: 700; font-family: inherit; cursor: pointer;
-  transition: all 0.15s; text-transform: uppercase; letter-spacing: 0.4px;
-  background: ${p => p.$active ? PRIORITY_COLORS[p.$level] + '18' : '#f8fafc'};
-  border: 1.5px solid ${p => p.$active ? PRIORITY_COLORS[p.$level] : '#e2e8f0'};
-  color: ${p => p.$active ? PRIORITY_COLORS[p.$level] : '#94a3b8'};
-  &:hover { border-color: ${p => PRIORITY_COLORS[p.$level]}; color: ${p => PRIORITY_COLORS[p.$level]}; }
-`;
-
-const Actions = styled.div`display: flex; gap: 8px; margin-top: 4px;`;
-
-const Btn = styled.button`
-  flex: 1; padding: 11px; border-radius: 8px;
-  font-size: 13.5px; font-weight: 600; font-family: inherit; cursor: pointer;
-  transition: all 0.15s;
-  background: ${p => p.$primary ? '#6366f1' : '#f1f5f9'};
-  color: ${p => p.$primary ? '#fff' : '#64748b'};
-  border: none;
-  &:hover { background: ${p => p.$primary ? '#4f46e5' : '#e2e8f0'}; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
-`;
-
-const DeleteBtn = styled.button`
-  padding: 11px 16px; border-radius: 8px;
-  background: #fff5f5; color: #ef4444;
-  border: 1.5px solid #fecaca; font-family: inherit;
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
-  &:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
-`;
-
 export default function TaskModal({ task, columns, onSave, onDelete, onClose }) {
   const isEdit = !!task?.id;
-  const [title, setTitle] = useState(task?.title || '');
-  const [content, setContent] = useState(task?.content || '');
+  const [title, setTitle]       = useState(task?.title || '');
+  const [content, setContent]   = useState(task?.content || '');
   const [columnId, setColumnId] = useState(task?.column_id || columns[0]?.id || '');
   const [priority, setPriority] = useState(task?.priority || 'medium');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
 
   const handleSave = async () => {
     if (!title.trim()) return;
@@ -125,62 +24,164 @@ export default function TaskModal({ task, columns, onSave, onDelete, onClose }) 
     onClose();
   };
 
-  return (
-    <Overlay onClick={onClose}>
-      <Modal onClick={e => e.stopPropagation()}>
-        <Header>
-          <Title>{isEdit ? 'Edit card' : 'Add card'}</Title>
-          <Close onClick={onClose}>✕</Close>
-        </Header>
+  const inputStyle = {
+    width: '100%', background: '#f8fafc',
+    border: '1.5px solid #e2e8f0', borderRadius: 8,
+    padding: '10px 12px', fontSize: 14, color: '#1e293b',
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    outline: 'none', boxSizing: 'border-box',
+    transition: 'border-color 0.15s',
+  };
 
-        <Field>
-          <Label>Title *</Label>
-          <Input
+  const labelStyle = {
+    display: 'block', fontSize: 11, fontWeight: 700,
+    color: '#94a3b8', marginBottom: 6,
+    textTransform: 'uppercase', letterSpacing: '0.6px',
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(15,23,42,0.45)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 1000,
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#fff', borderRadius: 16,
+          padding: '32px 36px', width: '100%', maxWidth: 460,
+          boxShadow: '0 24px 48px rgba(0,0,0,0.15)',
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#1e293b', margin: 0 }}>
+            {isEdit ? 'Edit card' : 'Add card'}
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: '#f1f5f9', border: 'none', color: '#64748b',
+              borderRadius: 8, width: 30, height: 30, cursor: 'pointer',
+              fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >✕</button>
+        </div>
+
+        {/* Title */}
+        <div style={{ marginBottom: 18 }}>
+          <label style={labelStyle}>Title *</label>
+          <input
+            style={inputStyle}
             placeholder="What needs to be done?"
             value={title}
             onChange={e => setTitle(e.target.value)}
             autoFocus
             onKeyDown={e => e.key === 'Enter' && handleSave()}
+            onFocus={e => e.target.style.borderColor = '#6366f1'}
+            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
           />
-        </Field>
+        </div>
 
-        <Field>
-          <Label>Description</Label>
-          <Textarea
+        {/* Description */}
+        <div style={{ marginBottom: 18 }}>
+          <label style={labelStyle}>Description</label>
+          <textarea
+            style={{ ...inputStyle, resize: 'vertical', minHeight: 80 }}
             placeholder="Add more details…"
             value={content}
             onChange={e => setContent(e.target.value)}
+            onFocus={e => e.target.style.borderColor = '#6366f1'}
+            onBlur={e => e.target.style.borderColor = '#e2e8f0'}
           />
-        </Field>
+        </div>
 
-        <Field>
-          <Label>Column</Label>
-          <Select value={columnId} onChange={e => setColumnId(e.target.value)}>
+        {/* Column */}
+        <div style={{ marginBottom: 18 }}>
+          <label style={labelStyle}>Column</label>
+          <select
+            style={{ ...inputStyle, cursor: 'pointer' }}
+            value={columnId}
+            onChange={e => setColumnId(e.target.value)}
+          >
             {columns.map(col => (
               <option key={col.id} value={col.id}>{col.title}</option>
             ))}
-          </Select>
-        </Field>
+          </select>
+        </div>
 
-        <Field>
-          <Label>Priority</Label>
-          <PriorityRow>
+        {/* Priority */}
+        <div style={{ marginBottom: 24 }}>
+          <label style={labelStyle}>Priority</label>
+          <div style={{ display: 'flex', gap: 8 }}>
             {['low', 'medium', 'high'].map(p => (
-              <PriorityBtn key={p} $active={priority === p} $level={p} onClick={() => setPriority(p)}>
+              <button
+                key={p}
+                onClick={() => setPriority(p)}
+                style={{
+                  flex: 1, padding: '9px 0', borderRadius: 8, cursor: 'pointer',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px',
+                  background: priority === p ? PRIORITY_COLORS[p] + '18' : '#f8fafc',
+                  border: `1.5px solid ${priority === p ? PRIORITY_COLORS[p] : '#e2e8f0'}`,
+                  color: priority === p ? PRIORITY_COLORS[p] : '#94a3b8',
+                  transition: 'all 0.15s',
+                }}
+              >
                 {p}
-              </PriorityBtn>
+              </button>
             ))}
-          </PriorityRow>
-        </Field>
+          </div>
+        </div>
 
-        <Actions>
-          {isEdit && <DeleteBtn onClick={handleDelete}>Delete</DeleteBtn>}
-          <Btn onClick={onClose}>Cancel</Btn>
-          <Btn $primary onClick={handleSave} disabled={loading || !title.trim()}>
+        {/* Actions */}
+        <div style={{ display: 'flex', gap: 8 }}>
+          {isEdit && (
+            <button
+              onClick={handleDelete}
+              style={{
+                padding: '11px 16px', borderRadius: 8,
+                background: '#fff5f5', color: '#ef4444',
+                border: '1.5px solid #fecaca',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              }}
+            >
+              Delete
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            style={{
+              flex: 1, padding: 11, borderRadius: 8, border: 'none',
+              background: '#f1f5f9', color: '#64748b',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: 13.5, fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={loading || !title.trim()}
+            style={{
+              flex: 1, padding: 11, borderRadius: 8, border: 'none',
+              background: loading || !title.trim() ? '#c7d2fe' : '#6366f1',
+              color: '#fff',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: 13.5, fontWeight: 600,
+              cursor: loading || !title.trim() ? 'not-allowed' : 'pointer',
+            }}
+          >
             {loading ? 'Saving…' : isEdit ? 'Save' : 'Add card'}
-          </Btn>
-        </Actions>
-      </Modal>
-    </Overlay>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
