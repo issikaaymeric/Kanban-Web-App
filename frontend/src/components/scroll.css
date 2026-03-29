@@ -7,3 +7,40 @@
 .column::-webkit-scrollbar {
     display: none;
 }
+
+@media (max-width: 500px) {
+    .column{
+        -ms-overflow-style: auto;
+        scrollbar-width: auto;
+    }
+
+    .column::-webkit-scrollbar {
+        display: block;
+    }
+    
+}
+
+@media (max-width: 300px) {
+    .column{
+        -ms-overflow-style: auto;
+        scrollbar-width: auto;
+    }
+
+    .column::-webkit-scrollbar {
+        display: block;
+    }
+    
+}
+
+@media (max-width: 100px) {
+    .column{
+        -ms-overflow-style: auto;
+        scrollbar-width: auto;
+    }
+
+    .column::-webkit-scrollbar {
+        display: block;
+    }
+    
+    
+}
