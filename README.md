@@ -8,7 +8,7 @@ A full-stack, real-time Kanban board built with React, Node.js/Express, and Supa
 
 ## 📸 Preview
 
-![Kanban Board Screenshot] (preview.png)
+![Kanban Board Screenshot] (./preview.png)
 
 ---
 
