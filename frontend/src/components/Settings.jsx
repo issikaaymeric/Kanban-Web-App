@@ -6,112 +6,110 @@ const fadeIn = keyframes`from{opacity:0;transform:scale(0.97)}to{opacity:1;trans
 
 const Overlay = styled.div`
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(15,23,42,0.4);
   display: flex; align-items: center; justify-content: center;
   z-index: 1000; backdrop-filter: blur(4px);
+  font-family: 'Plus Jakarta Sans', sans-serif;
 `;
 
 const Modal = styled.div`
-  background: #1a1a22;
-  border: 1px solid #2e2e3a;
-  border-radius: 20px;
-  padding: 40px;
-  width: 100%; max-width: 480px;
-  animation: ${fadeIn} 0.25s ease;
-  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 36px;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+  animation: ${fadeIn} 0.22s ease;
 `;
 
 const Header = styled.div`
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 `;
 
-const Title = styled.h2`font-size: 20px; font-weight: 700; color: #f0f0f5; margin: 0;`;
+const Title = styled.h2`font-size: 17px; font-weight: 700; color: #1e293b; margin: 0;`;
 
 const Close = styled.button`
-  background: #2e2e3a; border: none; color: #888; border-radius: 8px;
-  width: 32px; height: 32px; cursor: pointer; font-size: 16px;
+  background: #f1f5f9; border: none; color: #64748b; border-radius: 8px;
+  width: 30px; height: 30px; cursor: pointer; font-size: 14px;
   display: flex; align-items: center; justify-content: center;
-  &:hover { background: #3a3a4a; color: #f0f0f5; }
+  &:hover { background: #e2e8f0; color: #1e293b; }
 `;
 
-const Section = styled.div`margin-bottom: 28px;`;
+const Section = styled.div`margin-bottom: 24px;`;
+
 const SectionTitle = styled.p`
-  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #5a5a70; margin: 0 0 14px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: #94a3b8; margin: 0 0 12px;
 `;
 
 const Label = styled.label`
   display: block; font-size: 12px; font-weight: 600;
-  color: #8888a0; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+  color: #64748b; margin-bottom: 6px;
 `;
 
 const Input = styled.input`
-  width: 100%; background: #0f0f13; border: 1px solid #2e2e3a;
-  border-radius: 10px; padding: 11px 14px; font-size: 15px;
-  color: #f0f0f5; font-family: inherit; outline: none; box-sizing: border-box;
-  transition: border-color 0.2s;
-  &:focus { border-color: #7c6af7; }
+  width: 100%; background: #f8fafc; border: 1.5px solid #e2e8f0;
+  border-radius: 8px; padding: 10px 12px; font-size: 14px;
+  color: #1e293b; font-family: inherit; outline: none; box-sizing: border-box;
+  &:focus { border-color: #6366f1; background: #fff; }
 `;
 
-const ColorGrid = styled.div`display: flex; gap: 10px; flex-wrap: wrap;`;
+const ColorGrid = styled.div`display: flex; gap: 8px; flex-wrap: wrap;`;
 
 const ColorDot = styled.button`
-  width: 32px; height: 32px; border-radius: 50%;
+  width: 30px; height: 30px; border-radius: 50%;
   background: ${p => p.$color};
-  border: 3px solid ${p => p.$active ? '#f0f0f5' : 'transparent'};
+  border: 3px solid ${p => p.$active ? '#1e293b' : 'transparent'};
+  outline: 2px solid ${p => p.$active ? p.$color : 'transparent'};
   cursor: pointer; transition: transform 0.15s;
-  outline: none;
   &:hover { transform: scale(1.15); }
 `;
 
-const ThemeGrid = styled.div`display: flex; gap: 10px;`;
+const BgGrid = styled.div`display: flex; gap: 8px; flex-wrap: wrap;`;
 
-const ThemeBtn = styled.button`
-  flex: 1; padding: 12px 8px; border-radius: 10px;
-  background: ${p => p.$active ? '#7c6af7' : '#0f0f13'};
-  border: 1px solid ${p => p.$active ? '#7c6af7' : '#2e2e3a'};
-  color: ${p => p.$active ? '#fff' : '#8888a0'};
-  font-family: inherit; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
-  &:hover { border-color: #7c6af7; color: #f0f0f5; }
+const BgChip = styled.button`
+  padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: all 0.15s;
+  background: ${p => p.$bg};
+  border: 2px solid ${p => p.$active ? '#6366f1' : 'transparent'};
+  color: #1e293b;
+  &:hover { border-color: #6366f1; }
 `;
 
 const SaveBtn = styled.button`
-  width: 100%; background: #7c6af7; color: #fff; border: none;
-  border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 600;
-  font-family: inherit; cursor: pointer; transition: background 0.2s;
-  &:hover { background: #6a58e8; }
-  &:disabled { background: #3a3a50; cursor: not-allowed; }
+  width: 100%; background: #6366f1; color: #fff; border: none;
+  border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600;
+  font-family: inherit; cursor: pointer; transition: background 0.15s;
+  &:hover { background: #4f46e5; }
 `;
 
 const SignOutBtn = styled.button`
-  width: 100%; background: transparent; color: #f97066;
-  border: 1px solid #f97066; border-radius: 10px; padding: 11px;
-  font-size: 14px; font-weight: 600; font-family: inherit;
-  cursor: pointer; margin-top: 10px; transition: all 0.2s;
-  &:hover { background: #f97066; color: #fff; }
+  width: 100%; background: #fff; color: #ef4444;
+  border: 1.5px solid #fecaca; border-radius: 8px; padding: 11px;
+  font-size: 13.5px; font-weight: 600; font-family: inherit;
+  cursor: pointer; margin-top: 8px; transition: all 0.15s;
+  &:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
 `;
 
-const AVATAR_COLORS = ['#7c6af7','#f97066','#34d399','#60a5fa','#fbbf24','#f472b6','#a78bfa','#2dd4bf'];
-const THEMES = ['dark', 'light', 'ocean'];
+const AVATAR_COLORS = ['#6366f1','#ec4899','#f59e0b','#22c55e','#06b6d4','#8b5cf6','#f97316','#14b8a6'];
+
+const BOARD_BG_OPTIONS = [
+  { label: '🌸 Pink', value: '#fce7f3' },
+  { label: '🌊 Blue', value: '#dbeafe' },
+  { label: '🌿 Sage', value: '#dcfce7' },
+  { label: '🌅 Peach', value: '#ffedd5' },
+  { label: '☁️ White', value: '#f8fafc' },
+  { label: '🪻 Lavender', value: '#ede9fe' },
+];
 
 export default function Settings({ user, settings, onSave, onClose }) {
   const [name, setName] = useState(settings?.name || user?.user_metadata?.full_name || '');
-  const [avatarColor, setAvatarColor] = useState(settings?.avatarColor || '#7c6af7');
-  const [theme, setTheme] = useState(settings?.theme || 'dark');
-  const [loading, setLoading] = useState(false);
+  const [avatarColor, setAvatarColor] = useState(settings?.avatarColor || '#6366f1');
+  const [boardBg, setBoardBg] = useState(settings?.boardBg || '#fce7f3');
 
-  const save = async () => {
-    setLoading(true);
-    const newSettings = { name, avatarColor, theme };
-    onSave(newSettings);
-    setLoading(false);
+  const save = () => {
+    onSave({ name, avatarColor, boardBg });
     onClose();
-  };
-
-  const signOut = async () => {
-    await supabase.auth.signOut();
   };
 
   return (
@@ -138,18 +136,18 @@ export default function Settings({ user, settings, onSave, onClose }) {
         </Section>
 
         <Section>
-          <SectionTitle>Board theme</SectionTitle>
-          <ThemeGrid>
-            {THEMES.map(t => (
-              <ThemeBtn key={t} $active={theme === t} onClick={() => setTheme(t)}>
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </ThemeBtn>
+          <SectionTitle>Board background</SectionTitle>
+          <BgGrid>
+            {BOARD_BG_OPTIONS.map(opt => (
+              <BgChip key={opt.value} $bg={opt.value} $active={boardBg === opt.value} onClick={() => setBoardBg(opt.value)}>
+                {opt.label}
+              </BgChip>
             ))}
-          </ThemeGrid>
+          </BgGrid>
         </Section>
 
-        <SaveBtn onClick={save} disabled={loading}>Save changes</SaveBtn>
-        <SignOutBtn onClick={signOut}>Sign out</SignOutBtn>
+        <SaveBtn onClick={save}>Save changes</SaveBtn>
+        <SignOutBtn onClick={() => supabase.auth.signOut()}>Sign out</SignOutBtn>
       </Modal>
     </Overlay>
   );
